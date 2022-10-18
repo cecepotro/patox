@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ *34343dfffgh
  * @author jesus
  */
 public class Video {
@@ -20,7 +20,11 @@ public class Video {
     private Usuario usuario;
     private List<Comentario> comentarios;
     
-    
+    /**
+     * 
+     * @param json
+     * @return 
+     */
     public Video deserializar(String json){
         Video video = new Video();
         try {

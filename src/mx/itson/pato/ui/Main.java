@@ -7,7 +7,11 @@ package mx.itson.pato.ui;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import mx.itson.pato.entidades.Comentario;
 import mx.itson.pato.entidades.Video;
 
 /**
@@ -36,6 +40,8 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
         lblDescripcion = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblComentarios = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,6 +60,19 @@ public class Main extends javax.swing.JFrame {
 
         lblDescripcion.setText("Descripción");
 
+        tblComentarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Fecha", "Usuario", "Comentario"
+            }
+        ));
+        jScrollPane1.setViewportView(tblComentarios);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -61,11 +80,12 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar)
                     .addComponent(jLabel1)
                     .addComponent(lblTitulo)
                     .addComponent(lblDescripcion))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,7 +98,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDescripcion)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(161, Short.MAX_VALUE))
         );
 
         pack();
@@ -98,7 +120,19 @@ public class Main extends javax.swing.JFrame {
                 
                 Video video = new Video().deserializar(contenido);
                 
-                System.out.print(contenido);
+                
+                lblTitulo.setText(video.getTitulo());
+                lblDescripcion.setText(video.getDescripcion());
+                
+                DefaultTableModel modelo = (DefaultTableModel) tblComentarios.getModel();
+                modelo.setRowCount(0);
+                
+                DateFormat formato = new SimpleDateFormat("d 'de' MMMM 'de' yyyy");
+                
+                for(Comentario c : video.getComentarios()){
+                    modelo.addRow(new Object[] { formato.format(c.getFecha()), c.getAutor().getNombre(), c.getContenido() });
+                }
+                //System.out.print(contenido);
             }
             
         }catch(Exception ex){
@@ -145,7 +179,9 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTable tblComentarios;
     // End of variables declaration//GEN-END:variables
 }
